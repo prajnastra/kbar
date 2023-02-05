@@ -1,20 +1,20 @@
-use better_term::{Color, flush_styles};
-#[cfg(feature="crossterm")]
+use better_term::{flush_styles, Color};
+#[cfg(feature = "crossterm")]
 use crossterm::{cursor, execute};
-#[cfg(feature="crossterm")]
+#[cfg(feature = "crossterm")]
 use std::io::stdout;
 
 /// The Type of bar to be used
 #[derive(Debug, Clone)]
 pub enum BarType {
     /// creates a bar that looks like "████████████████████"
-    Bar,    // [██████████]
+    Bar, // [██████████]
     /// creates a bar that looks like "████████████████████"
     RawBar, // ██████
     /// Cycles through ., .., and ...
-    Dots,   // ...
+    Dots, // ...
     /// Cycles through |, /, -, and \
-    Line,   // |
+    Line, // |
 }
 
 /// The struct for handling progress bars
@@ -62,9 +62,9 @@ pub enum BarType {
 #[derive(Debug, Clone)]
 pub struct KBar {
     // crossterm position handling
-    #[cfg(feature="crossterm")]
+    #[cfg(feature = "crossterm")]
     x: u16,
-    #[cfg(feature="crossterm")]
+    #[cfg(feature = "crossterm")]
     y: u16,
 
     // settings
@@ -87,16 +87,19 @@ impl KBar {
     /// color: if it should output in color
     /// show_percent: if it should show the percentage next to the bar
     /// bar_length: How long the bar should be
-    #[cfg(not(feature="crossterm"))]
+    #[cfg(not(feature = "crossterm"))]
     pub fn new(bar_type: BarType, color: bool, show_percent: bool, bar_length: u16) -> Self {
         Self {
             percent: 0,
-            color, bar_type, bar_length, show_percent,
+            color,
+            bar_type,
+            bar_length,
+            show_percent,
             repeat_at: 0,
         }
     }
 
-    #[cfg(not(feature="crossterm"))]
+    #[cfg(not(feature = "crossterm"))]
     fn set_pos(&mut self) {
         print!("\r");
     }
@@ -107,7 +110,7 @@ impl KBar {
     /// color: if it should output in color
     /// show_percent: if it should show the percentage next to the bar
     /// bar_length: How long the bar should be
-    #[cfg(feature="crossterm")]
+    #[cfg(feature = "crossterm")]
     pub fn new(bar_type: BarType, color: bool, show_percent: bool, bar_length: u16) -> Self {
         Self::new_at(0, 0, bar_type, color, show_percent, bar_length)
     }
@@ -120,11 +123,23 @@ impl KBar {
     /// color: if it should output in color
     /// show_percent: if it should show the percentage next to the bar
     /// bar_length: How long the bar should be
-    #[cfg(feature="crossterm")]
-    pub fn new_at(x: u16, y: u16, bar_type: BarType, color: bool, show_percent: bool, bar_length: u16) -> Self {
+    #[cfg(feature = "crossterm")]
+    pub fn new_at(
+        x: u16,
+        y: u16,
+        bar_type: BarType,
+        color: bool,
+        show_percent: bool,
+        bar_length: u16,
+    ) -> Self {
         Self {
-            x, y, percent: 0,
-            color, bar_type, bar_length, show_percent,
+            x,
+            y,
+            percent: 0,
+            color,
+            bar_type,
+            bar_length,
+            show_percent,
             repeat_at: 0,
         }
     }
@@ -135,8 +150,13 @@ impl KBar {
     /// color: if it should output in color
     /// show_percent: if it should show the percentage next to the bar
     /// bar_length: How long the bar should be
-    #[cfg(feature="crossterm")]
-    pub fn new_at_cursor(bar_type: BarType, color: bool, show_percent: bool, bar_length: u16) -> Result<Self, String> {
+    #[cfg(feature = "crossterm")]
+    pub fn new_at_cursor(
+        bar_type: BarType,
+        color: bool,
+        show_percent: bool,
+        bar_length: u16,
+    ) -> Result<Self, String> {
         let pos = crossterm::cursor::position();
         if pos.is_err() {
             return Err(pos.unwrap_err().to_string());
@@ -144,10 +164,17 @@ impl KBar {
 
         let (x, y) = pos.unwrap();
 
-        Ok(Self::new_at(x, y, bar_type, color, show_percent, bar_length))
+        Ok(Self::new_at(
+            x,
+            y,
+            bar_type,
+            color,
+            show_percent,
+            bar_length,
+        ))
     }
 
-    #[cfg(feature="crossterm")]
+    #[cfg(feature = "crossterm")]
     fn set_pos(&mut self) -> Result<(), String> {
         let r = execute!(stdout(), cursor::MoveTo(self.x, self.y));
         if r.is_err() {
@@ -167,20 +194,24 @@ impl KBar {
     }
 
     fn draw_dots_and_line(&mut self, output: String, color: Color) -> String {
-        format!("{}{}", output, if self.show_percent {
-            if self.color {
-                format!(" {}{}%", color, self.percent)
+        format!(
+            "{}{}",
+            output,
+            if self.show_percent {
+                if self.color {
+                    format!(" {}{}%", color, self.percent)
+                } else {
+                    format!(" {}%", self.percent)
+                }
             } else {
-                format!(" {}%", self.percent)
+                format!("")
             }
-        } else {
-            format!("")
-        })
+        )
     }
 
     /// Draw the bar at its set location
     pub fn draw(&mut self) {
-        #[cfg(feature="crossterm")]
+        #[cfg(feature = "crossterm")]
         {
             let r = self.set_pos();
             if r.is_err() {
@@ -188,7 +219,7 @@ impl KBar {
             }
         }
 
-        #[cfg(not(feature="crossterm"))]
+        #[cfg(not(feature = "crossterm"))]
         self.set_pos();
 
         // get the current completion color of the bar
@@ -207,16 +238,28 @@ impl KBar {
                     // create the colored bar
                     let bar = format!("{}{}", color, "█".repeat(bar_completion));
 
-                    format!("{}{}", bar, if self.show_percent {
-                        format!(" {}{}{}%", color, self.percent, Color::White)
-                    } else { format!("") })
+                    format!(
+                        "{}{}",
+                        bar,
+                        if self.show_percent {
+                            format!(" {}{}{}%", color, self.percent, Color::White)
+                        } else {
+                            format!("")
+                        }
+                    )
                 } else {
                     // create the bar
                     let bar = format!("{}", "█".repeat(bar_completion));
 
-                    format!("{}{}", bar, if self.show_percent {
-                        format!(" {}%", self.percent)
-                    } else { format!("") })
+                    format!(
+                        "{}{}",
+                        bar,
+                        if self.show_percent {
+                            format!(" {}%", self.percent)
+                        } else {
+                            format!("")
+                        }
+                    )
                 }
             }
             BarType::Bar => {
@@ -236,21 +279,37 @@ impl KBar {
                 if self.color {
                     // create the main bar
                     let completed_bar = format!("{}{}", color, "█".repeat(bar_completion));
-                    let uncompleted_bar = format!("{}{}", Color::BrightBlack, "█".repeat(bar_uncomplete));
+                    let uncompleted_bar =
+                        format!("{}{}", Color::BrightBlack, "█".repeat(bar_uncomplete));
 
                     // format the bar and return it
-                    format!("{dc}[{}{}{dc}]{}", completed_bar, uncompleted_bar, if self.show_percent {
-                        format!(" {}{}{}%", color, self.percent, Color::White)
-                    } else { format!("") }, dc = Color::White)
+                    format!(
+                        "{dc}[{}{}{dc}]{}",
+                        completed_bar,
+                        uncompleted_bar,
+                        if self.show_percent {
+                            format!(" {}{}{}%", color, self.percent, Color::White)
+                        } else {
+                            format!("")
+                        },
+                        dc = Color::White
+                    )
                 } else {
                     // create the main bar
                     let completed_bar = format!("{}", "█".repeat(bar_completion));
                     let uncompleted_bar = format!("{}", "=".repeat(bar_uncomplete));
 
                     // format the bar and return it
-                    format!("[{}{}]{}", completed_bar, uncompleted_bar, if self.show_percent {
-                        format!(" {}%", self.percent)
-                    } else { format!("") })
+                    format!(
+                        "[{}{}]{}",
+                        completed_bar,
+                        uncompleted_bar,
+                        if self.show_percent {
+                            format!(" {}%", self.percent)
+                        } else {
+                            format!("")
+                        }
+                    )
                 }
             }
             BarType::Dots => {
@@ -268,7 +327,7 @@ impl KBar {
                     1 => {
                         format!(".. ")
                     }
-                    _  => {
+                    _ => {
                         format!("...")
                     }
                 };
@@ -302,9 +361,9 @@ impl KBar {
             }
         };
 
-        #[cfg(feature="crossterm")]
+        #[cfg(feature = "crossterm")]
         print!("{}", output);
-        #[cfg(not(feature="crossterm"))]
+        #[cfg(not(feature = "crossterm"))]
         print!("\r{}", output);
 
         if self.color {
@@ -318,26 +377,26 @@ impl KBar {
 }
 
 /// Hides the cursor using crossterm
-#[cfg(feature="crossterm")]
+#[cfg(feature = "crossterm")]
 pub fn hide_cursor() {
     execute!(stdout(), crossterm::cursor::Hide).expect("Failed to hide cursor!");
 }
 
 /// Shows the cursor using crossterm
-#[cfg(feature="crossterm")]
+#[cfg(feature = "crossterm")]
 pub fn show_cursor() {
     execute!(stdout(), crossterm::cursor::Show).expect("Failed to show cursor!");
 }
 
 impl Default for KBar {
     /// Creates a bar using default values
-    #[cfg(feature="crossterm")]
+    #[cfg(feature = "crossterm")]
     fn default() -> Self {
         Self::new_at_cursor(BarType::Bar, true, true, 20).expect("Failed to make default KBar")
     }
 
     /// Creates a bar using default values
-    #[cfg(not(feature="crossterm"))]
+    #[cfg(not(feature = "crossterm"))]
     fn default() -> Self {
         Self::new(BarType::Bar, true, true, 20)
     }
@@ -345,25 +404,22 @@ impl Default for KBar {
 
 #[cfg(test)]
 mod tests {
-    use std::thread;
-    use std::time::Duration;
+    use crate::{hide_cursor, show_cursor};
+    use crate::{BarType, KBar};
     use crossterm::execute;
     use crossterm::terminal::ClearType;
-    use crate::{BarType, KBar};
-    use crate::{hide_cursor, show_cursor};
+    use std::thread;
+    use std::time::Duration;
 
     #[test]
     fn t1() {
         use std::io::stdout;
-        execute!(stdout(), crossterm::terminal::Clear(ClearType::All)).expect("Failed to clear screen!");
-        let mut kbar = KBar::new_at(0, 1, BarType::RawBar,
-                                    true, true, 20);
-        let mut pbar2 = KBar::new_at(0, 3, BarType::Bar,
-                                     true, true, 20);
-        let mut pbar3 = KBar::new_at(7, 5, BarType::Dots,
-                                     true, true, 20);
-        let mut pbar4 = KBar::new_at(8, 7, BarType::Line,
-                                     true, true, 20);
+        execute!(stdout(), crossterm::terminal::Clear(ClearType::All))
+            .expect("Failed to clear screen!");
+        let mut kbar = KBar::new_at(0, 1, BarType::RawBar, true, true, 20);
+        let mut pbar2 = KBar::new_at(0, 3, BarType::Bar, true, true, 20);
+        let mut pbar3 = KBar::new_at(7, 5, BarType::Dots, true, true, 20);
+        let mut pbar4 = KBar::new_at(8, 7, BarType::Line, true, true, 20);
 
         hide_cursor();
 
