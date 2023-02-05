@@ -1,11 +1,11 @@
 [package]
 name = "kbar"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 authors = ["Floki prajnastra.dev@gmail.com"]
 homepage = "https://crates.io/crates/kbar"
 repository = "https://github.com/prajnastra/kbar"
-documentation = "https://docs.rs/kbar/latest/kbar/index.html"
+documentation = "https://docs.rs/kbar/latest/kbar"
 license = "MIT"
 readme = "README.md"
 description = "A progress bar for cli"
