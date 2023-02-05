@@ -9,6 +9,8 @@ documentation = "https://docs.rs/kbar/latest/kbar/index.html"
 license = "MIT"
 readme = "README.md"
 description = "A progress bar for cli"
+keywords = ["progrss", "bar", "cli"]
+categories = ["development-tools"]
 
 [dependencies]
 crossterm = { version="0.22.1", optional=true }
