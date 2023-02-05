@@ -1,0 +1,18 @@
+[package]
+name = "kbar"
+version = "0.0.1"
+edition = "2021"
+authors = ["Floki prajnastra.dev@gmail.com"]
+homepage = ""
+repository = "https://github.com/prajnastra/kbar"
+documentation = ""
+license = "MIT"
+readme = "README.md"
+description = "A progress bar for cli"
+
+[dependencies]
+crossterm = { version="0.22.1", optional=true }
+better_term = "1.0.4"
+
+[features]
+default = ["crossterm"]
