@@ -21,24 +21,24 @@ pub enum BarType {
 ///
 /// # Example:
 /// ```rust
-/// use pbars::{PBar, BarType};
+/// use kbar::{KBar, BarType};
 /// use std::thread::sleep;
 /// use std::time::Duration;
 ///
 /// fn main() {
-///     // using crossterm, this will create a pbar at 0,0
+///     // using crossterm, this will create a kbar at 0,0
 ///     // without crossterm, this is the only way to create a bar
-///     let mut pbar = PBar::new(BarType::Bar, true, true, 20);
+///     let mut kbar = KBar::new(BarType::Bar, true, true, 20);
 ///
 ///     for x in 0..1000 {
 ///         // get the percentage complete as a decimal
 ///         let percentage_decimal = x as f32 / 1000.0;
 ///         // scale the percentage from 0..1 to 0..100 and convert to a u8
 ///         let percent = (percentage_decimal * 100.0) as u8;
-///         // update the pbar
-///         pbar.update(percent);
-///         // draw the pbar
-///         pbar.draw();
+///         // update the kbar
+///         kbar.update(percent);
+///         // draw the kbar
+///         kbar.draw();
 ///         // delay for 10ms, making this run in 10 seconds
 ///         sleep(Duration::from_millis(10));
 ///     }
@@ -48,19 +48,19 @@ pub enum BarType {
 /// # crossterm specific creation
 /// Creating at a location
 /// ```rust
-/// use pbars::{PBar, BarType};
+/// use kbar::{KBar, BarType};
 ///
-/// PBar::new_at(0, 0, BarType::Bar, true, true, 20);
+/// KBar::new_at(0, 0, BarType::Bar, true, true, 20);
 /// ```
 ///
 /// Creating at the cursor's current location
 /// ```rust
-/// use pbars::{PBar, BarType};
+/// use kbar::{KBar, BarType};
 ///
-/// PBar::new_at_cursor(BarType::Bar, true, true, 20);
+/// KBar::new_at_cursor(BarType::Bar, true, true, 20);
 /// ```
 #[derive(Debug, Clone)]
-pub struct PBar {
+pub struct KBar {
     // crossterm position handling
     #[cfg(feature="crossterm")]
     x: u16,
@@ -80,7 +80,7 @@ pub struct PBar {
     percent: u8,
 }
 
-impl PBar {
+impl KBar {
     /// create a new progress bar when not using crossterm
     /// # parameters
     /// bar_type: the type of bar to display
@@ -329,11 +329,11 @@ pub fn show_cursor() {
     execute!(stdout(), crossterm::cursor::Show).expect("Failed to show cursor!");
 }
 
-impl Default for PBar {
+impl Default for KBar {
     /// Creates a bar using default values
     #[cfg(feature="crossterm")]
     fn default() -> Self {
-        Self::new_at_cursor(BarType::Bar, true, true, 20).expect("Failed to make default PBar")
+        Self::new_at_cursor(BarType::Bar, true, true, 20).expect("Failed to make default KBar")
     }
 
     /// Creates a bar using default values
@@ -349,20 +349,20 @@ mod tests {
     use std::time::Duration;
     use crossterm::execute;
     use crossterm::terminal::ClearType;
-    use crate::{BarType, PBar};
+    use crate::{BarType, KBar};
     use crate::{hide_cursor, show_cursor};
 
     #[test]
     fn t1() {
         use std::io::stdout;
         execute!(stdout(), crossterm::terminal::Clear(ClearType::All)).expect("Failed to clear screen!");
-        let mut pbar = PBar::new_at(0, 1, BarType::RawBar,
+        let mut kbar = KBar::new_at(0, 1, BarType::RawBar,
                                     true, true, 20);
-        let mut pbar2 = PBar::new_at(0, 3, BarType::Bar,
+        let mut pbar2 = KBar::new_at(0, 3, BarType::Bar,
                                      true, true, 20);
-        let mut pbar3 = PBar::new_at(7, 5, BarType::Dots,
+        let mut pbar3 = KBar::new_at(7, 5, BarType::Dots,
                                      true, true, 20);
-        let mut pbar4 = PBar::new_at(8, 7, BarType::Line,
+        let mut pbar4 = KBar::new_at(8, 7, BarType::Line,
                                      true, true, 20);
 
         hide_cursor();
@@ -376,8 +376,8 @@ mod tests {
         let max = 1000;
         for x in 0..max {
             let percent = ((x as f32 / (max - 1) as f32) * 100.0) as u8;
-            pbar.update(percent);
-            pbar.draw();
+            kbar.update(percent);
+            kbar.draw();
 
             pbar2.update(percent);
             pbar2.draw();
