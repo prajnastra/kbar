@@ -1,8 +1,9 @@
 use better_term::{flush_styles, Color};
 #[cfg(feature = "crossterm")]
-use crossterm::{cursor, execute};
+use crossterm::{cursor, execute, terminal};
 #[cfg(feature = "crossterm")]
 use std::io::stdout;
+use std::error::Error;
 
 /// The Type of bar to be used
 #[derive(Debug, Clone)]
@@ -29,7 +30,10 @@ pub enum BarType {
 ///     // using crossterm, this will create a kbar at 0,0
 ///     // without crossterm, this is the only way to create a bar
 ///     let mut kbar = KBar::new(BarType::Bar, true, true, 20);
-///
+/// 
+///     // clear the terminal buffer
+///     kbar.clear_term().expect("Not able to clear buffer");
+/// 
 ///     for x in 0..1000 {
 ///         // get the percentage complete as a decimal
 ///         let percentage_decimal = x as f32 / 1000.0;
@@ -207,6 +211,11 @@ impl KBar {
                 format!("")
             }
         )
+    }
+
+    pub fn clear_term(&mut self) -> Result<(), Box<dyn Error>> {
+        execute!(stdout(), terminal::Clear(terminal::ClearType::All))?;
+        Ok(())
     }
 
     /// Draw the bar at its set location

@@ -11,6 +11,9 @@ fn main() {
     // using crossterm, this will create a pbar at 0,0
     // without crossterm, this is the only way to create a bar
     let mut kbar = KBar::new(BarType::Bar, true, true, 20);
+    
+    // clear the terminal buffer
+    kbar.clear_term().expect("Not able to clear buffer");
 
     for x in 0..1000 {
         // get the percentage complete as a decimal
