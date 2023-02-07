@@ -34,7 +34,7 @@ impl Bar {
     }
 
     /// Set text shown in progress bar.
-    pub fn set_job_title(&mut self, new_title: &str) {
+    pub fn set_job_label(&mut self, new_title: &str) {
         self.job_title.clear();
         self.job_title.push_str(new_title);
         self._show_progress();
