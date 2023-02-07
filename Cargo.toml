@@ -13,8 +13,4 @@ keywords = ["progrss", "bar", "cli"]
 categories = ["development-tools"]
 
 [dependencies]
-crossterm = { version="0.22.1", optional=true }
-better_term = "1.0.4"
-
-[features]
-default = ["crossterm"]
+terminal_size = "0.1"
