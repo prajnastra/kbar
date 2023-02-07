@@ -11,11 +11,11 @@ use std::time::Duration;
 
 fn main() {
     let mut bar = Bar::new();
-    bar.set_job_title("Working...");
+    bar.set_job_label("Percentage");
 
-    for i in 0..11 {
+    for i in 0..101 {
         sleep(Duration::from_millis(100));
-        bar.reach_percent(i * 10);
+        bar.reach_percent(i);
     }
 }
 ```
