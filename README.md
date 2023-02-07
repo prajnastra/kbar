@@ -1,6 +1,6 @@
 # kbar
 
-A progrss bar for cli.
+A progrss bar for cli. See [Timer](https://github.com/prajnastra/timer) which is built using this library.
 
 ### Example:
 
