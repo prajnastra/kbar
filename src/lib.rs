@@ -1,3 +1,3 @@
 mod progress;
 
-pub use progress::{BarType, KBar};
+pub use progress::{BarType, Bar};

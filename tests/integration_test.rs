@@ -1,6 +1,6 @@
 #[cfg(feature = "crossterm")]
 use crossterm::execute;
-use kbar::{BarType, KBar};
+use kbar::{BarType, Bar};
 #[cfg(feature = "crossterm")]
 use std::io::stdout;
 
@@ -19,7 +19,7 @@ pub fn show_cursor() {
 #[cfg(test)]
 mod tests {
     use crate::{hide_cursor, show_cursor};
-    use crate::{BarType, KBar};
+    use crate::{BarType, Bar};
     use crossterm::execute;
     use crossterm::terminal::ClearType;
     use std::thread;
@@ -30,10 +30,10 @@ mod tests {
         use std::io::stdout;
         execute!(stdout(), crossterm::terminal::Clear(ClearType::All))
             .expect("Failed to clear screen!");
-        let mut kbar = KBar::new_at(0, 1, BarType::RawBar, true, true, 20);
-        let mut bar2 = KBar::new_at(0, 3, BarType::Bar, true, true, 20);
-        let mut bar3 = KBar::new_at(7, 5, BarType::Dots, true, true, 20);
-        let mut bar4 = KBar::new_at(8, 7, BarType::Line, true, true, 20);
+        let mut kbar = Bar::new_at(0, 1, BarType::RawBar, true, true, 20);
+        let mut bar2 = Bar::new_at(0, 3, BarType::Bar, true, true, 20);
+        let mut bar3 = Bar::new_at(7, 5, BarType::Dots, true, true, 20);
+        let mut bar4 = Bar::new_at(8, 7, BarType::Line, true, true, 20);
 
         kbar.clear_term().expect("Not able to clear terminal buffer");
 

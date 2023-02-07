@@ -19,7 +19,7 @@ pub enum BarType {
 }
 
 #[derive(Debug, Clone)]
-pub struct KBar {
+pub struct Bar {
     // crossterm position handling
     #[cfg(feature = "crossterm")]
     x: u16,
@@ -39,7 +39,7 @@ pub struct KBar {
     percent: u8,
 }
 
-impl KBar {
+impl Bar {
     /// create a new progress bar when not using crossterm
     /// # parameters
     /// bar_type: the type of bar to display
@@ -248,7 +248,7 @@ impl KBar {
 
                     // format the bar and return it
                     format!(
-                        "{dc}**[{}{}{dc}]{}",
+                        "{dc}[{}{}{dc}]{}",
                         completed_bar,
                         uncompleted_bar,
                         if self.show_percent {

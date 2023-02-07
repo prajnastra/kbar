@@ -3,14 +3,14 @@ A progrss bar for cli.
 
 ### Example:
 ```rust
-use kbar::{KBar, BarType};
+use kbar::{Bar, BarType};
 use std::thread::sleep;
 use std::time::Duration;
 
 fn main() {
     // using crossterm, this will create a bar at 0,0
     // without crossterm, this is the only way to create a bar
-    let mut kbar = KBar::new(BarType::Bar, true, true, 20);
+    let mut kbar = Bar::new(BarType::Bar, true, true, 20);
     
     // clear the terminal buffer
     kbar.clear_term().expect("Not able to clear buffer");

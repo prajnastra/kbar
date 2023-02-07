@@ -1,3 +1,3 @@
 mod bar;
 
-pub use bar::{KBar, BarType};
+pub use bar::{Bar, BarType};
