@@ -31,9 +31,9 @@ mod tests {
         execute!(stdout(), crossterm::terminal::Clear(ClearType::All))
             .expect("Failed to clear screen!");
         let mut kbar = KBar::new_at(0, 1, BarType::RawBar, true, true, 20);
-        let mut pbar2 = KBar::new_at(0, 3, BarType::Bar, true, true, 20);
-        let mut pbar3 = KBar::new_at(7, 5, BarType::Dots, true, true, 20);
-        let mut pbar4 = KBar::new_at(8, 7, BarType::Line, true, true, 20);
+        let mut bar2 = KBar::new_at(0, 3, BarType::Bar, true, true, 20);
+        let mut bar3 = KBar::new_at(7, 5, BarType::Dots, true, true, 20);
+        let mut bar4 = KBar::new_at(8, 7, BarType::Line, true, true, 20);
 
         kbar.clear_term().expect("Not able to clear terminal buffer");
 
@@ -51,14 +51,14 @@ mod tests {
             kbar.update(percent);
             kbar.draw();
 
-            pbar2.update(percent);
-            pbar2.draw();
+            bar2.update(percent);
+            bar2.draw();
 
-            pbar3.update(percent);
-            pbar3.draw();
+            bar3.update(percent);
+            bar3.draw();
 
-            pbar4.update(percent);
-            pbar4.draw();
+            bar4.update(percent);
+            bar4.draw();
             thread::sleep(Duration::from_millis(10));
         }
         println!();
