@@ -1,3 +1,3 @@
 mod bar;
 
-pub use bar::{Bar};
+pub use bar::Bar;

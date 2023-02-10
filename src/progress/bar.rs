@@ -24,6 +24,23 @@ impl Bar {
         }
     }
 
+    /// Create a custom progress bar.
+    pub fn custom(
+        left_cap: String,
+        right_cap: String,
+        filled_symbol: String,
+        empty_symbol: String,
+    ) -> Bar {
+        Bar {
+            job_title: String::new(),
+            progress_percentage: 0,
+            left_cap,
+            right_cap,
+            filled_symbol,
+            empty_symbol,
+        }
+    }
+
     /// Reset progress percentage to zero and job title to empty string. Also
     /// prints "\n".
     pub fn jobs_done(&mut self) {

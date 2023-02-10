@@ -1,3 +1,3 @@
 mod progress;
 
-pub use progress::{Bar};
+pub use progress::Bar;
